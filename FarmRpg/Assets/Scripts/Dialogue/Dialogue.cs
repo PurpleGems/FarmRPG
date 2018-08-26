@@ -22,7 +22,6 @@ public class Dialogue
     public string[] text;
 
     [Header("NPC")]
-    public string npcName;
     public NPCText[] npcDialogue;
     
 

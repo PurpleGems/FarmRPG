@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour
 {
     private Queue<string> dialogueSentencesQueue;
+    private Queue<string> npcNameQueue;
     private Queue<Sprite> npcSpriteQueue;
+
     public  GameObject[] TextBox;
     private Dialogue dialogue;
 
@@ -16,6 +18,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueSentencesQueue = new Queue<string>();
         npcSpriteQueue = new Queue<Sprite>();
+        npcNameQueue = new Queue<string>();
     }
 
 
@@ -26,9 +29,10 @@ public class DialogueManager : MonoBehaviour
         //Selects the textbox style placed in the enum of DialogueTrigger
         EnableTextBox(dialogue.style);
        // SetDialogueFields(dialogue);
-       QueueNextSentence();
-       QueueNextNPCThumbnail();
-        
+       QueueNPCNames();
+       QueueSentence();
+       QueueNPCThumbnail();
+       
 
 
     }
@@ -82,7 +86,7 @@ public class DialogueManager : MonoBehaviour
 
 
 
-    private void QueueNextSentence()
+    private void QueueSentence()
     {
         dialogueSentencesQueue.Clear();
 
@@ -104,7 +108,7 @@ public class DialogueManager : MonoBehaviour
         DisplayNextSentence();
     }
 
-    private void QueueNextNPCThumbnail()
+    private void QueueNPCThumbnail()
     {
             npcSpriteQueue.Clear();
       
@@ -121,9 +125,18 @@ public class DialogueManager : MonoBehaviour
         DisplayNextThumbnail();
     }
 
+    private void QueueNPCNames()
+    {
+        npcNameQueue.Clear();
+        foreach (NPCText element in dialogue.npcDialogue)
+        {
+            npcNameQueue.Enqueue(element.name);
+        }
+    }
+
     
 
-    public void DisplayNextSentence()
+    public void  DisplayNextSentence()
     {
         if (dialogueSentencesQueue.Count <= 0)
         {
@@ -142,6 +155,7 @@ public class DialogueManager : MonoBehaviour
                 Debug.Log("MADE IT HERE");
                 TextBox[(int)TextBoxStyle.Npc].transform.Find("NPCDialogueText").GetComponent<TextMeshProUGUI>().text = sentence;
                 DisplayNextThumbnail();
+                DisplayNextName();
                 break;
             case TextBoxStyle.OneLine:
                 TextBox[(int)TextBoxStyle.OneLine].GetComponentInChildren<TextMeshProUGUI>().text = sentence;
@@ -152,7 +166,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void DisplayNextThumbnail()
+    private void DisplayNextThumbnail()
     {
         if (npcSpriteQueue.Count <= 0)
             return;
@@ -160,6 +174,19 @@ public class DialogueManager : MonoBehaviour
         TextBox[1].transform.Find("NPCThumbnailImage").GetComponentInChildren<Image>().sprite = currentSprite;
 
     }
+
+    private void DisplayNextName()
+    {
+        if (npcNameQueue.Count <= 0)
+        {
+            return;
+        }
+
+        string currentName = npcNameQueue.Dequeue();
+        TextBox[1].transform.Find("NPCNameText").GetComponent<TextMeshProUGUI>().text = currentName;
+
+    }
+
 
     private void EndDialogue()
     {
