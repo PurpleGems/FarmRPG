@@ -2332,17 +2332,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     style: 1
+    text:
+    - Regular text box
+    - Should work as normal
     npcName: Pot of stew
-    npcThumbnail: {fileID: 21300108, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
-    textBox:
-    - text: I'm not as tasty as you think I am I swear, I was brewed by a witch...
+    npcDialogue:
+    - text: I'm just a pot of stew brewed by the witch please dont eat me I swear
+        I taste like SHIT!!
       sprite: {fileID: 21300054, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
-    - text: SIKE I'M ACTUALLY A MUSHROOM BABY
-      sprite: {fileID: 21300064, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
-    - text: Did my thumbnail change? I should be an iridum star...
-      sprite: {fileID: 21300060, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
-    - text: Did my thumbnail change? I should be an iridum star...
-      sprite: {fileID: 21300052, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
+    - text: SIKE I'M ACTUALLY A MUSHROOM BB
+      sprite: {fileID: 21300010, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
+    - text: MIKE SHUT THE FUCK UP YOU RETARD YOU'RE ACTUALLY A FKING PINK CAKE
+      sprite: {fileID: 21300112, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
 --- !u!114 &1992278582
 MonoBehaviour:
   m_ObjectHideFlags: 0

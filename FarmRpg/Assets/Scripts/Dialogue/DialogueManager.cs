@@ -9,7 +9,7 @@ public class DialogueManager : MonoBehaviour
 {
     private Queue<string> dialogueSentencesQueue;
     private Queue<Sprite> npcSpriteQueue;
-    public GameObject[] TextBox;
+    public  GameObject[] TextBox;
     private Dialogue dialogue;
 
     void Start()
@@ -80,52 +80,43 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    //TODO Have the dialogue system take in a custom data type for npcs so it can have a text field and a thumbnail
-
-        /*
-    private void SetDialogueFields(Dialogue dialogue)
-    {
-        switch (dialogue.style)
-        {
-            case TextBoxStyle.Regular:
-                TextBox[(int) dialogue.style].GetComponentInChildren<TextMeshProUGUI>().text = dialogue.text[0];
-                break;
-            case TextBoxStyle.Npc:
-                TextBox[(int) dialogue.style].transform.Find("NPCDialogueText").GetComponent<TextMeshProUGUI>().text = dialogue.text[0];
-                TextBox[(int) dialogue.style].transform.Find("NPCNameText").GetComponent<TextMeshProUGUI>().text = dialogue.npcName;
-                TextBox[(int) dialogue.style].transform.Find("NPCThumbnailImage").GetComponent<Image>().sprite = dialogue.textBox[0].sprite;
-                break;
-            case TextBoxStyle.OneLine:
-                TextBox[(int) dialogue.style].GetComponentInChildren<TextMeshProUGUI>().text = dialogue.text[0];
-                break;
-            default:
-                Debug.Log("no fields somehow");
-                break;
-        }
-
-    } // Pointless...
-    */
 
 
     private void QueueNextSentence()
     {
         dialogueSentencesQueue.Clear();
 
-        foreach (NPCText element in dialogue.textBox)
+        if (dialogue.style == TextBoxStyle.Npc)
         {
-            dialogueSentencesQueue.Enqueue(element.text);
+            foreach (NPCText element in dialogue.npcDialogue)
+            {
+                dialogueSentencesQueue.Enqueue(element.text);
+            }
+        }
+        else
+        {
+            foreach (string element in dialogue.text)
+            {
+                Debug.Log("Did we get into one line queue?");
+                dialogueSentencesQueue.Enqueue(element);
+            }
         }
         DisplayNextSentence();
     }
 
     private void QueueNextNPCThumbnail()
     {
-        npcSpriteQueue.Clear();
+            npcSpriteQueue.Clear();
+      
+            foreach (NPCText element in dialogue.npcDialogue)
+            {
+                npcSpriteQueue.Enqueue(element.sprite);
+            }
+        
+       
+        
 
-        foreach (NPCText element in dialogue.textBox)
-        {
-            npcSpriteQueue.Enqueue(element.sprite);
-        }
+
 
         DisplayNextThumbnail();
     }
