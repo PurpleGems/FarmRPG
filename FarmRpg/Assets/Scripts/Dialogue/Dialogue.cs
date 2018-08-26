@@ -17,9 +17,9 @@ public class Dialogue
     [Header("Text Box Style")]
     public TextBoxStyle style;
 
-    [Header("General")]
-    [TextArea(3,6)]
-    public string[] text;
+   // [Header("General")]
+   // [TextArea(3,6)]
+   // public string[] text;
 
     [Header("NPC")]
     public string npcName;

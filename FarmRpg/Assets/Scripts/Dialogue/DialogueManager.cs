@@ -7,13 +7,15 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    private Queue<string> dialogueSentences;
+    private Queue<string> dialogueSentencesQueue;
+    private Queue<Sprite> npcSpriteQueue;
     public GameObject[] TextBox;
     private Dialogue dialogue;
 
     void Start()
     {
-        dialogueSentences = new Queue<string>();
+        dialogueSentencesQueue = new Queue<string>();
+        npcSpriteQueue = new Queue<Sprite>();
     }
 
 
@@ -23,8 +25,9 @@ public class DialogueManager : MonoBehaviour
         this.dialogue = currentdialogue;
         //Selects the textbox style placed in the enum of DialogueTrigger
         EnableTextBox(dialogue.style);
-        SetDialogueFields(dialogue);
-        QueueNextSentence();
+       // SetDialogueFields(dialogue);
+       QueueNextSentence();
+       QueueNextNPCThumbnail();
         
 
 
@@ -79,7 +82,7 @@ public class DialogueManager : MonoBehaviour
 
     //TODO Have the dialogue system take in a custom data type for npcs so it can have a text field and a thumbnail
 
-
+        /*
     private void SetDialogueFields(Dialogue dialogue)
     {
         switch (dialogue.style)
@@ -90,7 +93,7 @@ public class DialogueManager : MonoBehaviour
             case TextBoxStyle.Npc:
                 TextBox[(int) dialogue.style].transform.Find("NPCDialogueText").GetComponent<TextMeshProUGUI>().text = dialogue.text[0];
                 TextBox[(int) dialogue.style].transform.Find("NPCNameText").GetComponent<TextMeshProUGUI>().text = dialogue.npcName;
-                TextBox[(int) dialogue.style].transform.Find("NPCThumbnailImage").GetComponent<Image>().sprite = dialogue.npcThumbnail;
+                TextBox[(int) dialogue.style].transform.Find("NPCThumbnailImage").GetComponent<Image>().sprite = dialogue.textBox[0].sprite;
                 break;
             case TextBoxStyle.OneLine:
                 TextBox[(int) dialogue.style].GetComponentInChildren<TextMeshProUGUI>().text = dialogue.text[0];
@@ -100,31 +103,44 @@ public class DialogueManager : MonoBehaviour
                 break;
         }
 
-    }
+    } // Pointless...
+    */
 
 
     private void QueueNextSentence()
     {
-        dialogueSentences.Clear();
+        dialogueSentencesQueue.Clear();
 
-        foreach (string element in dialogue.text)
+        foreach (NPCText element in dialogue.textBox)
         {
-            dialogueSentences.Enqueue(element);
+            dialogueSentencesQueue.Enqueue(element.text);
         }
         DisplayNextSentence();
+    }
+
+    private void QueueNextNPCThumbnail()
+    {
+        npcSpriteQueue.Clear();
+
+        foreach (NPCText element in dialogue.textBox)
+        {
+            npcSpriteQueue.Enqueue(element.sprite);
+        }
+
+        DisplayNextThumbnail();
     }
 
     
 
     public void DisplayNextSentence()
     {
-        if (dialogueSentences.Count <= 0)
+        if (dialogueSentencesQueue.Count <= 0)
         {
             EndDialogue();
             return;
         }
 
-        string sentence = dialogueSentences.Dequeue();
+        string sentence = dialogueSentencesQueue.Dequeue();
 
         switch (dialogue.style)
         {
@@ -134,6 +150,7 @@ public class DialogueManager : MonoBehaviour
             case TextBoxStyle.Npc:
                 Debug.Log("MADE IT HERE");
                 TextBox[(int)TextBoxStyle.Npc].transform.Find("NPCDialogueText").GetComponent<TextMeshProUGUI>().text = sentence;
+                DisplayNextThumbnail();
                 break;
             case TextBoxStyle.OneLine:
                 TextBox[(int)TextBoxStyle.OneLine].GetComponentInChildren<TextMeshProUGUI>().text = sentence;
@@ -142,6 +159,15 @@ public class DialogueManager : MonoBehaviour
                 Debug.Log("DisplayNextSentence?");
                 break;
         }
+    }
+
+    public void DisplayNextThumbnail()
+    {
+        if (npcSpriteQueue.Count <= 0)
+            return;
+        Sprite currentSprite = npcSpriteQueue.Dequeue();
+        TextBox[1].transform.Find("NPCThumbnailImage").GetComponentInChildren<Image>().sprite = currentSprite;
+
     }
 
     private void EndDialogue()
