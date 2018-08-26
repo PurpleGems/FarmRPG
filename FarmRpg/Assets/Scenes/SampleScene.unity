@@ -2413,6 +2413,9 @@ MonoBehaviour:
     - haha sike I'm actually a mushroom bb
     npcName: Pot of stew
     npcThumbnail: {fileID: 21300054, guid: dec96860fd76e514abf08726c3a14ca9, type: 3}
+    textBox:
+    - text: 
+      sprite: {fileID: 0}
 --- !u!114 &1992278582
 MonoBehaviour:
   m_ObjectHideFlags: 0

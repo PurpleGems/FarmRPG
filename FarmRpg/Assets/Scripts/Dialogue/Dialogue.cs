@@ -25,8 +25,10 @@ public class Dialogue
     public string npcName;
     public Sprite npcThumbnail;
 
+    [Header("Random")] public NPCText[] textBox;
 
 
-    
+
+
 
 }

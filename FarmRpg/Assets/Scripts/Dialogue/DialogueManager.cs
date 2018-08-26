@@ -77,6 +77,8 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    //TODO Have the dialogue system take in a custom data type for npcs so it can have a text field and a thumbnail
+
 
     private void SetDialogueFields(Dialogue dialogue)
     {
