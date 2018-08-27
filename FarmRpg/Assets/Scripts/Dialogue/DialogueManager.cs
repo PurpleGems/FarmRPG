@@ -11,6 +11,8 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> npcNameQueue;
     private Queue<Sprite> npcSpriteQueue;
 
+    public Animator[] textBoxesAnimator;
+
     public  GameObject[] TextBox;
     private Dialogue dialogue;
 
@@ -29,7 +31,7 @@ public class DialogueManager : MonoBehaviour
         FindObjectOfType<PlayerInteract>().isInteracting = true;
         this.dialogue = currentdialogue;
         //Selects the textbox style placed in the enum of DialogueTrigger
-        EnableTextBox(dialogue.style);
+       EnableTextBox(dialogue.style);
        // SetDialogueFields(dialogue);
        QueueNPCNames();
        QueueSentence();
@@ -48,20 +50,26 @@ public class DialogueManager : MonoBehaviour
     private void EnableRegularTextbox()
     {
         TextBox[0].SetActive(true);
+        textBoxesAnimator[0].SetBool("IsOpen", true);
+
     }
     private void EnableNpcTextbox()
     {
         TextBox[1].SetActive(true);
+        textBoxesAnimator[1].SetBool("IsOpen", true);
+
     }
     private void EnableOneLineTextbox()
     {
         TextBox[2].SetActive(true);
+        textBoxesAnimator[2].SetBool("IsOpen", true);
+
     }
 
     #endregion
 
 
-    
+
     private void EnableTextBox(TextBoxStyle style)
     {
         DisableAllTextboxs();
@@ -192,7 +200,14 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        foreach (var element in textBoxesAnimator)
+        {
+            element.SetBool("IsOpen", false);
+        }
+
         FindObjectOfType<PlayerInteract>().isInteracting = false;
+        
+
         Debug.Log("End of Conversation");
     }
 
@@ -206,11 +221,11 @@ public class DialogueManager : MonoBehaviour
     
 
     private void DisableAllTextboxs()
-    {
-        TextBox[0].SetActive(false);
-        TextBox[1].SetActive(false);
-        TextBox[2].SetActive(false);
-
+    {      
+        for (int i = 0; i < TextBox.Length; i++)
+        {
+            TextBox[i].SetActive(false);        
+        }     
     }
 
 
