@@ -9,7 +9,12 @@ public class DialogueTrigger : MonoBehaviour
 
     public void TriggerDialogue()
     {
+        if (!FindObjectOfType<PlayerInteract>().isInteracting)
+        {
         FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
+            FindObjectOfType<PlayerInteract>().isInteracting = true;
+        }
+        
     }
 }
 

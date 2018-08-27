@@ -16,6 +16,7 @@ public class DialogueManager : MonoBehaviour
 
     void Start()
     {
+        
         dialogueSentencesQueue = new Queue<string>();
         npcSpriteQueue = new Queue<Sprite>();
         npcNameQueue = new Queue<string>();
@@ -25,6 +26,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue currentdialogue)
     {
+        FindObjectOfType<PlayerInteract>().isInteracting = true;
         this.dialogue = currentdialogue;
         //Selects the textbox style placed in the enum of DialogueTrigger
         EnableTextBox(dialogue.style);
@@ -190,6 +192,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        FindObjectOfType<PlayerInteract>().isInteracting = false;
         Debug.Log("End of Conversation");
     }
 

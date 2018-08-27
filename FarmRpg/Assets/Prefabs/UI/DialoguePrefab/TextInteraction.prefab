@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    style: 0
-    text: []
+    style: 2
+    text:
+    - Eww... You smell funny.
     npcDialogue: []
