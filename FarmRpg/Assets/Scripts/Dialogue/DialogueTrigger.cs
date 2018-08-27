@@ -11,8 +11,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (!FindObjectOfType<PlayerInteract>().isInteracting)
         {
-        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
-            FindObjectOfType<PlayerInteract>().isInteracting = true;
+        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);           
         }
         
     }

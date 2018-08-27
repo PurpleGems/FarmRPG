@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    
     private Queue<string> dialogueSentencesQueue;
     private Queue<string> npcNameQueue;
     private Queue<Sprite> npcSpriteQueue;
@@ -28,11 +29,14 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue currentdialogue)
     {
-        FindObjectOfType<PlayerInteract>().isInteracting = true;
+        
+            FindObjectOfType<PlayerInteract>().isInteracting = true;
         this.dialogue = currentdialogue;
+        
         //Selects the textbox style placed in the enum of DialogueTrigger
-       EnableTextBox(dialogue.style);
-       // SetDialogueFields(dialogue);
+        EnableTextBox(dialogue.style);
+        
+        // SetDialogueFields(dialogue);
        QueueNPCNames();
        QueueSentence();
        QueueNPCThumbnail();
@@ -51,18 +55,19 @@ public class DialogueManager : MonoBehaviour
     {
         TextBox[0].SetActive(true);
         textBoxesAnimator[0].SetBool("IsOpen", true);
-
+        FindObjectOfType<PlayerMovement>().hasControl = false;
     }
     private void EnableNpcTextbox()
     {
         TextBox[1].SetActive(true);
         textBoxesAnimator[1].SetBool("IsOpen", true);
-
+        FindObjectOfType<PlayerMovement>().hasControl = false;
     }
     private void EnableOneLineTextbox()
     {
         TextBox[2].SetActive(true);
         textBoxesAnimator[2].SetBool("IsOpen", true);
+        FindObjectOfType<PlayerInteract>().isInteracting = false;
 
     }
 
@@ -87,6 +92,7 @@ public class DialogueManager : MonoBehaviour
             case TextBoxStyle.OneLine:
                 Debug.Log("OneLineTextBoxEnabled");
                 EnableOneLineTextbox();
+                StartCoroutine(DialogueDisplayTime(3));
                 break;
             default:
                 Debug.Log("No textbox to enable");
@@ -206,7 +212,8 @@ public class DialogueManager : MonoBehaviour
         }
 
         FindObjectOfType<PlayerInteract>().isInteracting = false;
-        
+        FindObjectOfType<PlayerMovement>().hasControl = true;
+
 
         Debug.Log("End of Conversation");
     }
@@ -217,7 +224,20 @@ public class DialogueManager : MonoBehaviour
     }
 
 
-    
+    private IEnumerator DialogueDisplayTime(float time)
+    {
+        GameObject interactedGameObject = FindObjectOfType<PlayerInteract>().currentInteractingTextObject;
+        yield return new WaitForSeconds(time);
+        if (dialogue.style == TextBoxStyle.OneLine && interactedGameObject == FindObjectOfType<PlayerInteract>().currentInteractingTextObject ||
+            interactedGameObject == FindObjectOfType<PlayerInteract>().previousInteractedObject)
+        EndDialogue();
+        else
+        {
+            Debug.Log("Different dialogue was open before the timer was up");
+        }
+
+        
+    }
     
 
     private void DisableAllTextboxs()
@@ -228,7 +248,10 @@ public class DialogueManager : MonoBehaviour
         }     
     }
 
-
+    public TextBoxStyle GetTextBoxStyle()
+    {
+        return dialogue.style;
+    }
 
 
 

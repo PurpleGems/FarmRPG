@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    public bool hasControl = true;
     public float walkSpeed = 5;
 	// Use this for initialization
 	void Start () {
@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+        if (hasControl)
 		Movement();
 	}
 
