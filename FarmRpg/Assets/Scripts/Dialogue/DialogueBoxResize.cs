@@ -5,17 +5,12 @@ using UnityEngine;
 
 public class DialogueBoxResize : MonoBehaviour
 {
-
-    public TextMeshProUGUI textToResize;
-    
-    void Start()
-    {
-        
-        
-    }
+    //This script sits on the OneLineTextbox, gets the text from it and rezises itself to the length of the inputted text.
+    public TextMeshProUGUI textToResize;  
 
     void Update()
     {
+        
         GetComponent<RectTransform>().sizeDelta = new Vector2(textToResize.preferredWidth + 15f, 32f);
     }
 }

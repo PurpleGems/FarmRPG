@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    
+    //Once a Dialogue starts it stores everything inside these variables.
     private Queue<string> dialogueSentencesQueue;
     private Queue<string> npcNameQueue;
     private Queue<Sprite> npcSpriteQueue;
@@ -18,8 +18,7 @@ public class DialogueManager : MonoBehaviour
     private Dialogue dialogue;
 
     void Start()
-    {
-        
+    {      
         dialogueSentencesQueue = new Queue<string>();
         npcSpriteQueue = new Queue<Sprite>();
         npcNameQueue = new Queue<string>();
@@ -30,16 +29,18 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(Dialogue currentdialogue)
     {
         
-            FindObjectOfType<PlayerInteract>().isInteracting = true;
+        FindObjectOfType<PlayerInteract>().isInteracting = true;
         this.dialogue = currentdialogue;
         
         //Selects the textbox style placed in the enum of DialogueTrigger
+        //Depending on what TextBox we choose from the enum it will activate that one.
         EnableTextBox(dialogue.style);
         
-        // SetDialogueFields(dialogue);
-       QueueNPCNames();
-       QueueSentence();
-       QueueNPCThumbnail();
+        //Gets everything from the Dialogue instance we triggered and stores everything inside the dialogue
+        //inside the Queue variables
+        QueueNPCNames();
+        QueueSentence();
+        QueueNPCThumbnail();
        
 
 
@@ -49,7 +50,7 @@ public class DialogueManager : MonoBehaviour
 
 
     
-    #region Enable TextBoxes Methods
+    //Enables the textbox we triggered and sets the players ability to move to false
 
     private void EnableRegularTextbox()
     {
@@ -71,12 +72,13 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-    #endregion
+    
 
 
 
     private void EnableTextBox(TextBoxStyle style)
     {
+        //This Function should disable all activated TextBoxes and enable the one we triggered
         DisableAllTextboxs();
 
         switch (style)
@@ -92,6 +94,7 @@ public class DialogueManager : MonoBehaviour
             case TextBoxStyle.OneLine:
                 Debug.Log("OneLineTextBoxEnabled");
                 EnableOneLineTextbox();
+                //Should remove a one line text after 3 seconds.
                 StartCoroutine(DialogueDisplayTime(3));
                 break;
             default:
@@ -104,6 +107,9 @@ public class DialogueManager : MonoBehaviour
 
     private void QueueSentence()
     {
+        //Clears everything inside of the Sentence queue (clears everything from previous dialogue)
+        //also checks to see which queue to grab the text info from npc or regular
+        //since the npc textbox has its own Type
         dialogueSentencesQueue.Clear();
 
         if (dialogue.style == TextBoxStyle.Npc)
@@ -126,23 +132,20 @@ public class DialogueManager : MonoBehaviour
 
     private void QueueNPCThumbnail()
     {
-            npcSpriteQueue.Clear();
+        //Clears everything inside the npcimage Queue and stores the new ones from the dialogue we just triggered.
+        npcSpriteQueue.Clear();
       
             foreach (NPCText element in dialogue.npcDialogue)
             {
                 npcSpriteQueue.Enqueue(element.sprite);
             }
-        
-       
-        
-
-
 
         DisplayNextThumbnail();
     }
 
     private void QueueNPCNames()
     {
+        //Clears everything inside the npcName Queue and stores the new ones from the dialogue we just triggered.
         npcNameQueue.Clear();
         foreach (NPCText element in dialogue.npcDialogue)
         {
@@ -159,7 +162,8 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
             return;
         }
-
+        //Removes the first string and stores the 2nd element from the queue inside this string then sets the text of the textbox we are using to
+        //that string.
         string sentence = dialogueSentencesQueue.Dequeue();
 
         switch (dialogue.style)
@@ -226,6 +230,11 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator DialogueDisplayTime(float time)
     {
+        //ONLY GETS CALLED IF THE TEXT BOX STYLE IS ONE LINE
+
+        //Gets the gameobject we are interacting with and stores it, waits 3 seconds to see if we triggered a different one line text box
+        //if so it shouldnt remove the new one before 3 seconds so do nothing until that new ones 3 seconds is up.
+        Debug.Log("Interacted with a textbox?");
         GameObject interactedGameObject = FindObjectOfType<PlayerInteract>().currentInteractingTextObject;
         yield return new WaitForSeconds(time);
         if (dialogue.style == TextBoxStyle.OneLine && interactedGameObject == FindObjectOfType<PlayerInteract>().currentInteractingTextObject ||
