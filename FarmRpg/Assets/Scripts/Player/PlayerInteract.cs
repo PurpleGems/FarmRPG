@@ -25,7 +25,9 @@ public class PlayerInteract : MonoBehaviour
         else if (Input.GetButtonDown("InteractText") && currentInteractingTextObject && isInteracting)
 	    {
             if(FindObjectOfType<DialogueManager>().GetTextBoxStyle() != TextBoxStyle.OneLine)
-            FindObjectOfType<DialogueManager>().DisplayNextSentence();
+                DialogueManager.instance.DisplayNextSentence();
+
+            //FindObjectOfType<DialogueManager>().DisplayNextSentence(); what I did previously incase something goes wrong...
 
 	    }
 	}

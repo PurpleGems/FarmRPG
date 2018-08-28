@@ -7,6 +7,26 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    private static DialogueManager _instance;
+
+    public static DialogueManager instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindGameObjectWithTag("GameEngine").GetComponent<DialogueManager>();
+            }
+
+            return _instance;
+        }
+    }
+
+    void Awake()
+    {
+        _instance = this;
+    }
+
     //Once a Dialogue starts it stores everything inside these variables.
     private Queue<string> dialogueSentencesQueue;
     private Queue<string> npcNameQueue;
