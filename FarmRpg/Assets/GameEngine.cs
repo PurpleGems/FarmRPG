@@ -6,6 +6,8 @@ public class GameEngine : MonoBehaviour
 {
     public static GameEngine instance;
 
+    public UIFocus CurrentFocus;
+
     public string playerName;
     public int health;
     public int money;
@@ -24,6 +26,16 @@ public class GameEngine : MonoBehaviour
             GameObject.DontDestroyOnLoad(this.gameObject);
         }
     }
+
+    public void Update()
+    {
+        
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+                CurrentFocus.FocusRight();
+        
+    }
+
+    
 
    
 

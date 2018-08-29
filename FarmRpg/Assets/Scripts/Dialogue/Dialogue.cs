@@ -21,6 +21,8 @@ public class Dialogue
     [TextArea(3,6)]
     public string[] text;
 
+    public DialogueCustomEvents[] events;
+
     [Header("NPC")]
     public NPCText[] npcDialogue;
     

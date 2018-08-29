@@ -105,10 +105,12 @@ public class DialogueManager : MonoBehaviour
         {
             case TextBoxStyle.Regular:
                 EnableRegularTextbox();
+                Time.timeScale = 0;
                 Debug.Log("RegularTextBoxEnabled");
                 break;
             case TextBoxStyle.Npc:
                 EnableNpcTextbox();
+                Time.timeScale = 0;
                 Debug.Log("NPCTextBoxEnabled");
                 break;
             case TextBoxStyle.OneLine:
@@ -237,7 +239,7 @@ public class DialogueManager : MonoBehaviour
 
         FindObjectOfType<PlayerInteract>().isInteracting = false;
         FindObjectOfType<PlayerMovement>().hasControl = true;
-
+        Time.timeScale = 1;
 
         Debug.Log("End of Conversation");
     }
